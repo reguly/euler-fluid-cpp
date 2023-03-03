@@ -4,7 +4,7 @@
 const int Sim::numParticles = 10;
 
 Sim::Sim() : options(Options()), container(Container(0.2f, 0, 0.0000001f)) {
-	this->win.create(sf::VideoMode(SIZE*SCALE, SIZE*SCALE), "Euler fluid simulation - Github: https://github.com/driema/euler-fluid-cpp", sf::Style::Titlebar | sf::Style::Close);
+	this->win.create(sf::VideoMode({SIZE*SCALE, SIZE*SCALE}), "Euler fluid simulation - Github: https://github.com/driema/euler-fluid-cpp", sf::Style::Titlebar | sf::Style::Close);
 }
 
 Sim::~Sim() {}

@@ -1,0 +1,6 @@
+build: ./src/*.cpp
+	g++ -std=c++17 -c ./src/*.cpp -I/Users/reguly/Work/software/SFML-install/include
+	mkdir -p obj && mv ./*.o ./obj
+	g++ ./obj/*.o -o main -L/Users/reguly/Work/software/SFML-install/lib -F/Users/reguly/Work/software/SFML-install/lib -lsfml-graphics -lsfml-window -lsfml-system -framework freetype
+	chmod 755 ./main
+	./main

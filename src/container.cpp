@@ -94,7 +94,7 @@ void Container::Render(sf::RenderWindow& win, Color color) {
 		for(int j = 0; j < this->size; j++) {
 			sf::RectangleShape rect;
 			rect.setSize(sf::Vector2f(SCALE, SCALE));
-			rect.setPosition(j * SCALE, i * SCALE);
+			rect.setPosition({(float)j * SCALE, (float)i * SCALE});
 			
 			switch (color) {
 				case Color::Default:
