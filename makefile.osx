@@ -1,7 +1,7 @@
 build:
-	g++ -std=c++17 -c ./src/*.cpp
+	g++-12 -std=c++17 -c ./src/*.cpp -fopenmp -Ofast
 	mkdir -p obj && mv ./*.o ./obj
-	g++ ./obj/*.o -o main
+	g++-12 ./obj/*.o -o main -fopenmp -Ofast
 gui: ./src/*.cpp
 	g++ -std=c++17 -c ./src/*.cpp -I/Users/reguly/Work/software/SFML-install/include -DGRAPHICS
 	mkdir -p obj && mv ./*.o ./obj

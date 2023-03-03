@@ -11,6 +11,14 @@ Container::Container(float dt, float diff, float visc) {
 	this->diff = diff;
 	this->visc = visc;
 
+	this->px = new float[SIZE*SIZE];
+	this->py = new float[SIZE*SIZE];
+	this->temp = new float[SIZE*SIZE];
+	this->x = new float[SIZE*SIZE];
+	this->y = new float[SIZE*SIZE];
+	this->previousDensity = new float[SIZE*SIZE];
+	this->density = new float[SIZE*SIZE];
+
 	this->InitArr(this->px, SIZE*SIZE);
 	this->InitArr(this->py, SIZE*SIZE);
 	this->InitArr(this->temp, SIZE*SIZE);
@@ -20,7 +28,15 @@ Container::Container(float dt, float diff, float visc) {
 	this->InitArr(this->density, SIZE*SIZE);
 }
 
-Container::~Container() {}
+Container::~Container() {
+	delete[] this->px;
+	delete[] this->py;
+	delete[] this->temp;
+	delete[] this->x;
+	delete[] this->y;
+	delete[] this->previousDensity;
+	delete[] this->density;
+}
 
 void Container::InitArr(float arr[], int size) {
 	for (int i = 0; i < size; i++) {

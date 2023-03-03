@@ -17,15 +17,15 @@ private:
 	float diff;
 	float visc;
 	
-	float px[SIZE*SIZE];
-	float py[SIZE*SIZE];
-	float temp[SIZE*SIZE];
+	float *px;
+	float *py;
+	float *temp;
 
-	float x[SIZE*SIZE];
-	float y[SIZE*SIZE];
+	float *x;
+	float *y;
 
-	float previousDensity[SIZE*SIZE];
-	float density[SIZE*SIZE];
+	float *previousDensity;
+	float *density;
 	
 	void InitArr(float arr[], int size);
 	float MapToRange(float value, float minIn, float maxIn, float minOut, float maxOut);
