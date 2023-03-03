@@ -1,2 +1,4 @@
-const int SIZE = 70;
-const int SCALE = 8;
+const int SIZE = 400;
+const int SCALE = 1;
+
+#define IX(x,y,N) (int)(((y) * N) + (x))

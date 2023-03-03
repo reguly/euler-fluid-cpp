@@ -1,7 +1,7 @@
 #include "../header/container.h"
 #include<iostream>
 
-int IX(int x, int y, int N);
+// int IX(int x, int y, int N);
 
 Container::Container() : physics(Physics()) {}
 
@@ -48,11 +48,27 @@ void Container::Step() {
 	this->physics.Advect(1, this->x, this->px, this->px, this->py, this->dt, this->size);
 	this->physics.Advect(2, this->y, this->py, this->px, this->py, this->dt, this->size);
 
-	this->physics.Project(this->x, this->y, this->px, this->py, 16, this->size, this->temp);
+	float total_vel = this->physics.Project(this->x, this->y, this->px, this->py, 16, this->size, this->temp);
+	std::cout << "Total velocity: " << total_vel << std::endl;
 
 	this->physics.Diffuse(0, this->previousDensity, this->density, this->diff, this->dt, 16, this->size, this->temp);	
 	this->physics.Advect(0, this->density, this->previousDensity, this->x, this->y, this->dt, this->size);
 }
+
+float Container::MapToRange(float val, float minIn, float maxIn, float minOut, float maxOut) {
+	float x = (val - minIn) / (maxIn - minIn);
+	float result = minOut + (maxOut - minOut) * x;
+	return (result < minOut) ? minOut : (result > maxOut) ? maxOut : result;
+}
+
+void Container::FadeDensity(int size) {
+	for (int i = 0; i < size; i++) {
+		float d = this->density[i];
+		density[i] = (d - 0.05f < 0) ? 0 : d - 0.05f; 
+	}	
+}
+
+#ifdef GRAPHICS
 
 sf::Color Container::Hsv(int hue, float sat, float val, float d) {
 	hue %= 360;
@@ -80,12 +96,6 @@ sf::Color Container::Hsv(int hue, float sat, float val, float d) {
     		case 4: return sf::Color(t*255, p*255, val*255, d);
     		case 5: return sf::Color(val*255, p*255, q*255, d);
   	}
-}
-
-float Container::MapToRange(float val, float minIn, float maxIn, float minOut, float maxOut) {
-	float x = (val - minIn) / (maxIn - minIn);
-	float result = minOut + (maxOut - minOut) * x;
-	return (result < minOut) ? minOut : (result > maxOut) ? maxOut : result;
 }
 
 void Container::Render(sf::RenderWindow& win, Color color) {
@@ -118,9 +128,4 @@ void Container::Render(sf::RenderWindow& win, Color color) {
 	}
 }
 
-void Container::FadeDensity(int size) {
-	for (int i = 0; i < size; i++) {
-		float d = this->density[i];
-		density[i] = (d - 0.05f < 0) ? 0 : d - 0.05f; 
-	}	
-}
+#endif

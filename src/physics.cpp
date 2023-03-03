@@ -1,7 +1,9 @@
 #include<cmath>
+#include "../header/const.h"
 #include "../header/physics.h"
+#include <algorithm>
 
-int IX(int x, int y, int N);
+// int IX(int x, int y, int N);
 
 Physics::Physics() {}
 
@@ -59,7 +61,7 @@ void Physics::Diffuse(int b, float x[], float x0[], float diff, float dt, int it
 	this->LinSolve(b, x, x0, a, 1 + 6 * a, iter, N, temp);	
 }
 
-void Physics::Project(float vx[], float vy[], float p[], float div[], int iter, int N, float temp[]) {
+float Physics::Project(float vx[], float vy[], float p[], float div[], int iter, int N, float temp[]) {
         for (int j = 1; j < N - 1; j++) {
             	for (int i = 1; i < N - 1; i++) {
                 	div[IX(i, j, N)] = -0.5f*(
@@ -76,14 +78,17 @@ void Physics::Project(float vx[], float vy[], float p[], float div[], int iter, 
 	this->SetBnd(0, p, N);
 	this->LinSolve(0, p, div, 1, 6, iter, N, temp);
     
+	float total_vel = 0.0f;
 	for (int j = 1; j < N - 1; j++) {
 		for (int i = 1; i < N - 1; i++) {
 			vx[IX(i, j, N)] -= 0.5f * (p[IX(i+1, j, N)] - p[IX(i-1, j, N)]) * N;
 			vy[IX(i, j, N)] -= 0.5f * (p[IX(i, j+1, N)] -p[IX(i, j-1, N)]) * N;
+			total_vel += sqrt(vx[IX(i, j, N)]*vx[IX(i, j, N)]+vy[IX(i, j, N)]*vy[IX(i, j, N)]);
 		}
-        }
-    	this->SetBnd(1, vx, N);
-    	this->SetBnd(2, vy, N);
+	}
+	this->SetBnd(1, vx, N);
+	this->SetBnd(2, vy, N);
+	return total_vel;
 }
 
 void Physics::Advect(int b, float d[], float d0[], float vx[], float vy[], float dt, int N) {

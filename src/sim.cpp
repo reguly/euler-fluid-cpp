@@ -4,7 +4,9 @@
 const int Sim::numParticles = 10;
 
 Sim::Sim() : options(Options()), container(Container(0.2f, 0, 0.0000001f)) {
+	#ifdef GRAPHICS
 	this->win.create(sf::VideoMode({SIZE*SCALE, SIZE*SCALE}), "Euler fluid simulation - Github: https://github.com/driema/euler-fluid-cpp", sf::Style::Titlebar | sf::Style::Close);
+	#endif
 }
 
 Sim::~Sim() {}
@@ -13,6 +15,7 @@ void Sim::Setup() {}
 
 void Sim::Run() {
 	this->Setup();
+	#ifdef GRAPHICS
 	sf::Vector2i previousMouse = sf::Mouse::getPosition(this->win);
 	sf::Vector2i currentMouse = sf::Mouse::getPosition(this->win);
 
@@ -55,5 +58,13 @@ void Sim::Run() {
 		
 		this->win.display();
 	}
+	#else
+	for (int i = 0; i < 100; i++) {
+		this->container.AddDensity(10, 10, 200);
+		this->container.AddVelocity(10, 10, 1, 1);
+		this->container.Step();
+		this->container.FadeDensity(SIZE*SIZE);
+	}
+	#endif
 }
 

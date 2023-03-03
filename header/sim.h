@@ -4,7 +4,9 @@
 
 class Sim {
 private:
+#ifdef GRAPHICS
 	sf::RenderWindow win;
+#endif
 	Container container;
 	Options options;
 	void Setup();

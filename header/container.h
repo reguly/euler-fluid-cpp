@@ -1,5 +1,7 @@
 #include<vector>
+#ifdef GRAPHICS
 #include<SFML/Graphics.hpp>
+#endif
 
 #include "./physics.h"
 #include "./const.h"
@@ -35,9 +37,10 @@ public:
 	void AddDensity(float x, float y, float amount);
 	void AddVelocity(float x, float y, float px, float py);
 	void Step();
-	void Render(sf::RenderWindow& win, Color color);
 	void FadeDensity(int size);
-
+	#ifdef GRAPHICS
+	void Render(sf::RenderWindow& win, Color color);
 	sf::Color Hsv(int hue, float sat, float val, float d);
+	#endif
 };
 
