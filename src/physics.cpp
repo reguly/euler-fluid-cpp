@@ -32,31 +32,34 @@ void Physics::SetBnd(int b, float x[], int N) {
                                   + x[IX(N-1, N-1, N)]);
 }
 
-void Physics::LinSolve(int b, float x[], float x0[], float a, float c, int iter, int N) {
+void Physics::LinSolve(int b, float x[], float x0[], float a, float c, int iter, int N, float temp[]) {
 	float cRecip = 1.0 / c;
-    	for (int k = 0; k < iter; k++) {
-        	for (int j = 1; j < N - 1; j++) {
-                	for (int i = 1; i < N - 1; i++) {
-                    		x[IX(i, j, N)] = (x0[IX(i, j, N)] + a 
-					*(x[IX(i+1, j, N)]
-                                	+x[IX(i-1, j, N)]
-                                	+x[IX(i, j+1, N)]
-                                	+x[IX(i, j-1, N)]
-                                	+x[IX(i, j, N)]
-                                	+x[IX(i, j, N)]
-                           		)) * cRecip;
+  float *_x = x;
+  float *_tmp = temp;
+  for (int k = 0; k < iter; k++) {
+    for (int j = 1; j < N - 1; j++) {
+      for (int i = 1; i < N - 1; i++) {
+        _tmp[IX(i, j, N)] = (x0[IX(i, j, N)] + a 
+            *(_x[IX(i+1, j, N)]
+              +_x[IX(i-1, j, N)]
+              +_x[IX(i, j+1, N)]
+              +_x[IX(i, j-1, N)]
+              +_x[IX(i, j, N)]
+              +_x[IX(i, j, N)]
+             )) * cRecip;
                 	}
-		}
-		this->SetBnd(b, x, N);
-	}
+    }
+    std::swap(_x, _tmp);
+    this->SetBnd(b, _x, N);
+  }
 }
 
-void Physics::Diffuse(int b, float x[], float x0[], float diff, float dt, int iter, int N) {
+void Physics::Diffuse(int b, float x[], float x0[], float diff, float dt, int iter, int N, float temp[]) {
 	float a = dt * diff * (N - 2) * (N - 2);
-	this->LinSolve(b, x, x0, a, 1 + 6 * a, iter, N);	
+	this->LinSolve(b, x, x0, a, 1 + 6 * a, iter, N, temp);	
 }
 
-void Physics::Project(float vx[], float vy[], float p[], float div[], int iter, int N) {
+void Physics::Project(float vx[], float vy[], float p[], float div[], int iter, int N, float temp[]) {
         for (int j = 1; j < N - 1; j++) {
             	for (int i = 1; i < N - 1; i++) {
                 	div[IX(i, j, N)] = -0.5f*(
@@ -71,7 +74,7 @@ void Physics::Project(float vx[], float vy[], float p[], float div[], int iter, 
 
 	this->SetBnd(0, div, N); 
 	this->SetBnd(0, p, N);
-	this->LinSolve(0, p, div, 1, 6, iter, N);
+	this->LinSolve(0, p, div, 1, 6, iter, N, temp);
     
 	for (int j = 1; j < N - 1; j++) {
 		for (int i = 1; i < N - 1; i++) {

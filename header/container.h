@@ -17,6 +17,7 @@ private:
 	
 	float px[SIZE*SIZE];
 	float py[SIZE*SIZE];
+	float temp[SIZE*SIZE];
 
 	float x[SIZE*SIZE];
 	float y[SIZE*SIZE];
