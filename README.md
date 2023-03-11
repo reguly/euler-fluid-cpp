@@ -4,6 +4,10 @@ Euler fluid simulation
 ![Demo Gif](demo/euler-fluid-simulation-hsb.gif)
 ![Demo Gif](demo/euler-fluid-simulation-velocity.gif)
 
+## Assignment 1
+
+Parallelise computational loops
+
 ## Inspiration
 
 This project is based upon an article by Mike Ash.
@@ -31,7 +35,7 @@ Keyboard options:
 
 ## Building the project
 
-To build the project simply execute `make build` in the directory of the `makefile`.
+To build the project simply execute `make build` or `make gui` in the directory of the `makefile`.
 
 Make sure to also install the library `SFML` which is needed to build the project.
 
